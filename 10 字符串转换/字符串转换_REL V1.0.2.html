@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<form name="myform">
+				- 编程小工具 -  <br/>
+				输入:<br/>
+				<textarea rows="6" cols="160" name="value1" ></textarea><br/>
+
+				输出:<br/>
+				<textarea rows="7" cols="160" name="value2" ></textarea><br/>
+		</form>
+		<input type="button" name="button" style="height:30px;width:160px;font-size:16px;background-color:gray;" value= "数组增加0x格式" onclick="submit()"></input><br/>
+		<input type="button" name="button1" style="height:30px;width:160px;font-size:16px;background-color:gray;" value="0x格式压缩" onclick="submit1()"></input><br/>
+		<input type="button" name="button2" style="height:30px;width:160px;font-size:16px;background-color:gray;" value= "字符串转16进制" onclick="submit2()"></input><br/>
+		<input type="button" name="button3" style="height:30px;width:160px;font-size:16px;background-color:gray;" value="16进制转字符串" onclick="submit3()"></input><br/>
+		<input type="button" name="button4" style="height:30px;width:160px;font-size:16px;background-color:gray;" value= "转小写" onclick="submit4()"></input><br/>
+		<input type="button" name="button5" style="height:30px;width:160px;font-size:16px;background-color:gray;" value="转大写" onclick="submit5()"></input><br/>
+		<input type="button" name="button6" style="height:30px;width:160px;font-size:16px;background-color:gray;" value="去空格" onclick="submit6()"></input><br/>
+        <br/>
+		版本：V1.0.2 <br/>
+		提供：by Sail Won @Ingeek 2020.01.10 <br/>
+
+
+	</body>
+	
+	<script type="text/javascript">
+
+
+
+		var submit = function  () {
+			var value1 = myform.value1.value
+			myform.value2.value = strTohexAndFormat(value1)
+		}
+
+		var submit1 = function  () {
+		var value1 = myform.value1.value
+		myform.value2.value = clear(value1)
+		}
+
+		var submit2 = function  () {
+			var value1 = myform.value1.value
+			myform.value2.value = str2hex(value1)
+		}
+
+		var submit3 = function  () {
+			var value1 = myform.value1.value
+			myform.value2.value = hex2str(value1)
+		}
+
+		var submit4 = function  () {
+			var value1 = myform.value1.value
+			myform.value2.value = lowerCase(value1)
+
+		}
+
+		var submit5 = function  () {
+		var value1 = myform.value1.value
+		myform.value2.value = upperCase(value1)
+
+		}
+
+		var submit6 = function  () {
+		var value1 = myform.value1.value
+		myform.value2.value = removeSpace(value1)
+
+		}
+
+		//0x数据压缩
+		function clear(str) {
+		    str = str.replace(/,/g, "");//取消字符串中出现的所有逗号
+		    str = str.replace(/0x/g, "");//取消字符串中出现的所有逗号
+			str = str.replace(/ /g, "");//取消字符串中出现的所有空格
+			str = str.replace(/:/g, "");//取消字符串中出现的所有空格
+			
+			var array = [];
+			array.push(str);
+			array.push("\r\noutput length:");
+			array.push(str.length / 2);
+            array.push("bytes\r\n");
+		 	return array.join('')
+		}
+
+		//字符串16进制加0x
+		function strTohexAndFormat(str){
+			
+			str = str.replace(/ /g, "");//取消字符串中出现的所有空格
+			if(str.length % 2 != 0){
+				alert("数据格式有误");
+				return;
+		    }
+			var array = [];
+			for (var i = 0; i < str.length / 2; i++) {
+				var temp = str.substr(i*2,2);
+				temp = "0x" + temp + ","
+				array.push(temp)
+			}
+            array.push("\r\noutput length:");
+            array.push(str.length / 2);
+            array.push("bytes\r\n");
+		 	return array.join('')
+		}
+
+		// 字符串转16进制
+		function str2hex(str){
+		  if(str === ""){
+            alert("data illegal!");
+		    return "";
+		  }
+		  var arr = [];
+		  arr.push("0x");
+		  for(var i=0;i<str.length;i++){
+		    arr.push(str.charCodeAt(i).toString(16));//.toString(8));
+		  }
+          arr.push("\r\noutput length: ");
+          arr.push(str.length);
+          arr.push(" bytes\r\n");
+		  return arr.join('');
+		}
+
+		// 16进制转字符串
+		function hex2str(hex) {
+		　　var trimedStr = hex.trim();
+		　　var rawStr = trimedStr.substr(0,2).toLowerCase() === "0x" ? trimedStr.substr(2) : trimedStr;
+		　　var len = rawStr.length;
+		　　if(len % 2 !== 0) {
+		　　　　alert("Illegal Format ASCII Code!");
+		　　　　return "";
+		　　}
+		　　var curCharCode;
+		　　var resultStr = [];
+		　　for(var i = 0; i < len;i = i + 2) {
+		　　　　curCharCode = parseInt(rawStr.substr(i, 2), 16);
+		　　　　resultStr.push(String.fromCharCode(curCharCode));
+		　　}
+			resultStr.push("\n output length:");
+			resultStr.push(len/2);
+			resultStr.push("byte\n");
+		　　return resultStr.join("");
+		}
+
+		//转小写
+		function lowerCase(str){
+			if (str.length < 1) {
+				return;
+			}
+			return str.toLowerCase();
+		}
+
+		//转大写
+		function upperCase(str){
+			if (str.length < 1) {
+				return;
+			}
+			return str.toUpperCase();
+		}
+
+		//去空格
+		function removeSpace(str){
+			if (str.length < 1) {
+				return;
+			}
+			str = str.replace(/ /g, "");//取消字符串中出现的所有空格
+						
+			var array = [];
+			array.push(str);
+			array.push("\r\noutput length:");
+			array.push(str.length / 2);
+            array.push("bytes\r\n");
+		 	return array.join('')
+		}
+
+	</script>
+
+
+
+</html>
